@@ -46,11 +46,11 @@ class MultiHeadSelfAttn:
     def __init__(self, num_heads, Wq, Wk, Wv, Wo):
         self.D = Wq.shape[-1]
         self.num_heads = num_heads
+        self.dh = self.D // num_heads 
         self.Wq = Wq
         self.Wk = Wk
         self.Wv = Wv
         self.Wo = Wo
-        self.dh = self.D // num_heads 
 
     def forward(self, x):
         B, N, D = x.shape
@@ -67,7 +67,7 @@ class MultiHeadSelfAttn:
     __call__ = forward
 
 def GELU(x):
-    """Transformers (BERT, GPT) modellerinde sıkça kullanılan hızlı Tanh yaklaşımı"""
+    """approximation"""
     return 0.5 * x * (1.0 + np.tanh(np.sqrt(2.0 / np.pi) * (x + 0.044715 * np.power(x, 3))))
 
 def softmax(x, axis=-1):
